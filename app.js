@@ -1,5 +1,6 @@
 require("dotenv").config();
 require("express-async-errors");
+const path = require("path");
 const express = require("express");
 const app = express();
 const productsRouter = require("./routes/products");
@@ -9,14 +10,10 @@ const errorMiddleware = require("./middleware/errorHandler");
 // middleware
 app.use(express.json());
 
-// routes
-app.get("/", (req, res) => {
-  res
-    .status(200)
-    .send('<h1>Store API</h1><a href="/api/v1/products">Products</a>');
-});
+// static site
+app.use("/", express.static(path.join(__dirname, "public")));
 
-// product route
+// products route
 app.use("/api/v1/products", productsRouter);
 
 app.use(notFoundMiddleware);
